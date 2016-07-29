@@ -1,0 +1,17 @@
+masterdom.rest.users:
+    type: rest
+    resource: Masterdom\Application\Controller\UserController
+
+masterdom.rest.design_projects:
+    type: rest
+    parent: masterdom.rest.users
+    resource: Masterdom\Application\Controller\DesignProjectController
+
+masterdom.rest.reference:
+    type: rest
+    resource: Masterdom\Application\Controller\ReferenceController
+
+masterdom.rest.design_projects.photos:
+    type: rest
+    parent: masterdom.rest.design_projects
+    resource: Masterdom\Application\Controller\DesignProjectPhotoController

@@ -1,0 +1,25 @@
+Masterdom\Domain\Model\DesignProject\DesignInterior:
+    type: entity
+    id:
+        id:
+            column: id
+            type: DesignInteriorId
+    table: design_interiors
+    fields:
+        title:
+            type: string
+        description:
+            type: text
+    manyToOne:
+        project:
+            targetEntity: Masterdom\Domain\Model\DesignProject\DesignProject
+        room:
+            targetEntity: Masterdom\Domain\Model\Room\Room
+        design_style:
+            targetEntity: Masterdom\Domain\Model\DesignStyle\DesignStyle
+    oneToMany:
+        photo:
+            targetEntity: Masterdom\Domain\Model\DesignPhoto\DesignPhoto
+            cascade: ["all"]
+            orphanRemoval: true
+            mappedBy: interior

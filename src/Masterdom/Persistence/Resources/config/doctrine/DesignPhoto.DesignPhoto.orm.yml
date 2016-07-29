@@ -1,0 +1,18 @@
+Masterdom\Domain\Model\DesignPhoto\DesignPhoto:
+    type: entity
+    id:
+        id:
+            column: id
+            type: DesignPhotoId
+    table: design_photos
+    repositoryClass: Masterdom\Persistence\Doctrine\DesignPhoto\DoctrineDesignPhotoRepository
+    fields:
+        file:
+            type: Image
+    manyToOne:
+        interior:
+            targetEntity: Masterdom\Domain\Model\DesignProject\DesignInterior
+            inversedBy: photo
+        owner:
+            targetEntity: Masterdom\Domain\Model\User\User
+

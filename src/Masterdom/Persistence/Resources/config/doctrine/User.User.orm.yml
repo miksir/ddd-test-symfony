@@ -1,0 +1,23 @@
+Masterdom\Domain\Model\User\User:
+    type: entity
+    id:
+        id:
+            column: id
+            type: UserId
+    table: users
+    repositoryClass: Masterdom\Persistence\Doctrine\User\DoctrineUserRepository
+    fields:
+        email:
+            type: Email
+        password:
+            type: HashedPassword
+        fullname:
+            type: FullName
+        phone:
+            type: Phone
+    manyToMany:
+        role:
+            targetEntity: Masterdom\Domain\Model\Role\Role
+            joinTable:
+                name: user_roles
+            cascade: ["persist", "merge"]

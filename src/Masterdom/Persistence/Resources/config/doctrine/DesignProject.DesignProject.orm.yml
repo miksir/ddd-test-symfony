@@ -1,0 +1,24 @@
+Masterdom\Domain\Model\DesignProject\DesignProject:
+    type: entity
+    id:
+        id:
+            column: id
+            type: DesignProjectId
+    table: design_projects
+    repositoryClass: Masterdom\Persistence\Doctrine\DesignProject\DoctrineDesignProjectRepository
+    fields:
+        name:
+            type: string
+        description:
+            type: text
+        siteName:
+            type: SiteName
+    manyToOne:
+        owner:
+            targetEntity: Masterdom\Domain\Model\User\User
+    oneToMany:
+        interior:
+            targetEntity: Masterdom\Domain\Model\DesignProject\DesignInterior
+            cascade: ["all"]
+            orphanRemoval: true
+            mappedBy: project

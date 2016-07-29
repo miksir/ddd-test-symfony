@@ -1,0 +1,11 @@
+masterdom.api:
+    resource: "@MasterdomApplicationBundle/Resources/config/routing.yml"
+    prefix:   /api
+
+masterdom.doc:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix: /api/doc
+
+index:
+    path:      /
+    defaults:  { _controller: MasterdomApplicationBundle:Index:index }

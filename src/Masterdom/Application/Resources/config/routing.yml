@@ -1,0 +1,4 @@
+masterdom.rest:
+    type: rest
+    resource: "@MasterdomApplicationBundle/Resources/config/routing_rest.yml"
+    prefix: /rest

@@ -1,0 +1,19 @@
+Masterdom\Domain\Model\Attribute\Attribute:
+    type: entity
+    id:
+        id:
+            column: id
+            type: AttributeId
+    table: attributes
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: type
+        type: integer
+    discriminatorMap:
+        1: Masterdom\Domain\Model\Room\Room
+        2: Masterdom\Domain\Model\DesignStyle\DesignStyle
+    fields:
+        name:
+            type: string
+        siteName:
+            type: SiteName
