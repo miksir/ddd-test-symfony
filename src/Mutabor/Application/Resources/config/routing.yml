@@ -1,0 +1,4 @@
+mutabor.rest:
+    type: rest
+    resource: "@MutaborApplicationBundle/Resources/config/routing_rest.yml"
+    prefix: /rest

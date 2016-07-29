@@ -1,0 +1,215 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+
+framework:
+    #esi:             ~
+    #translator:      { fallbacks: ["%locale%"] }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    #serializer:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # handler_id set to null will use default session handler from php.ini
+        handler_id:  ~
+    fragments:       ~
+    http_method_override: true
+    request:
+        formats:
+            multipart: 'multipart/form-data'
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   pdo_pgsql
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        types:
+            UserId:
+                class: Mutabor\Persistence\Doctrine\User\DoctrineUserId
+            Email:
+                class: Mutabor\Persistence\Doctrine\User\DoctrineEmail
+            Phone:
+                class: Mutabor\Persistence\Doctrine\User\DoctrinePhone
+            HashedPassword:
+                class: Mutabor\Persistence\Doctrine\User\DoctrinePassword
+            FullName:
+                class: Mutabor\Persistence\Doctrine\User\DoctrineFullName
+            RoleId:
+                class: Mutabor\Persistence\Doctrine\Role\DoctrineRoleId
+            DesignProjectId:
+                class: Mutabor\Persistence\Doctrine\DesignProject\DoctrineDesignProjectId
+            DesignInteriorId:
+                class: Mutabor\Persistence\Doctrine\DesignProject\DoctrineDesignInteriorId
+            SiteName:
+                class: Mutabor\Persistence\Doctrine\DoctrineSiteName
+            RoomId:
+                class: Mutabor\Persistence\Doctrine\Room\DoctrineRoomId
+            DesignStyleId:
+                class: Mutabor\Persistence\Doctrine\DesignStyle\DoctrineDesignStyleId
+            AttributeId:
+                class: Mutabor\Persistence\Doctrine\Attribute\DoctrineAttributeId
+            DesignPhotoId:
+                class: Mutabor\Persistence\Doctrine\DesignPhoto\DoctrineDesignPhotoId
+            File:
+                class: Mutabor\Persistence\Doctrine\File\DoctrineFile
+            Image:
+                class: Mutabor\Persistence\Doctrine\File\DoctrineImage
+        mapping_types:
+            UserId: UserId
+            Email: Email
+            Phone: Phone
+            HashedPassword: HashedPassword
+            FullName: FullName
+            RoleId: RoleId
+            DesignProjectId: DesignProjectId
+            DesignInteriorId: DesignInteriorId
+            SiteName: SiteName
+            RoomId: RoomId
+            DesignStyleId: DesignStyleId
+            AttributeId: AttributeId
+            DesignPhotoId: DesignPhotoId
+            File: File
+            Image: Image
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: false
+        mappings:
+          MutaborPersistenceBundle:
+            mapping: true
+            type: "yml"
+            prefix: Mutabor\Domain\Model
+#            is_bundle: false
+#            dir: "%kernel.root_dir%/../src/Mutabor/Persistence/Resources/config/doctrine/domain/"
+#          MutaborPersistenceBundle:
+#            mapping: true
+#            type: "yml"
+#            prefix: Mutabor\Persistence\Doctrine\Entity
+#            is_bundle: false
+#            dir: "%kernel.root_dir%/../src/Mutabor/Persistence/Resources/config/doctrine/entity/"
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+
+fos_rest:
+    param_fetcher_listener:
+        enabled: true
+
+    body_listener:
+        enabled: true
+
+    format_listener:
+        rules:
+            - { path: '^/api/rest/', priorities: [ 'json', 'xml', 'html' ], fallback_format: 'json', prefer_extension: true }
+            - { path: '^/', priorities: [ 'html' ], fallback_format: 'html', prefer_extension: true }
+
+    body_converter:
+        enabled: true
+        validate: true
+
+    view:
+        view_response_listener:
+            enabled: false
+        formats:
+            xml: true
+            json: true
+        templating_formats:
+            html: true
+
+    serializer:
+        serialize_null: true
+
+    exception:
+        enabled: true
+        codes:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
+
+    allowed_methods_listener: true
+
+#    access_denied_listener:
+#        json: true
+#        xml: true
+
+sensio_framework_extra:
+    view:
+        annotations: false
+    request:
+        converters: true
+
+jms_serializer:
+    metadata:
+        #cache: file
+        debug: "%kernel.debug%"
+        auto_detection: false
+        directories:
+            mutabor_domain:
+                namespace_prefix: Mutabor\Domain\Model
+                path: "@MutaborApplicationBundle/Resources/config/serializer"
+            mutabor_services:
+                namespace_prefix: Mutabor\Domain\Service
+                path: "@MutaborApplicationBundle/Resources/config/serializer"
+    visitors:
+        json:
+            options: 384
+
+nelmio_api_doc:
+    name: API Documentation
+    sandbox:
+        enabled: "%kernel.debug%"
+
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        allow_origin: []
+        allow_headers: []
+        allow_methods: []
+        expose_headers: []
+        max_age: 0
+        hosts: []
+        origin_regex: false
+    paths:
+        '^/api/rest/':
+            origin_regex: true
+            allow_origin:
+                - '^http://(localhost|127\.0\.0\.1)(:\d+)?(/|$)'
+                - '^http://10\.55\.'
+                - '^http://[\w\.\-]+\.artutkin.ru(/|$)'
+                - '^http://\w+(:\d+)?(/|$)'
+                - '^http://[\w\.\-]+\.(int|local|dev|loc)(:\d+)?(/|$)'
+            allow_headers: ['X-Auth-Token', 'Content-Type']
+            allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+            max_age: 3600

@@ -1,0 +1,10 @@
+Mutabor\Domain\Model\Role\Role:
+    type: entity
+    id:
+        id:
+            column: id
+            type: RoleId
+    table: roles
+    fields:
+        name:
+            type: string

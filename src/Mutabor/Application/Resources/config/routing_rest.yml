@@ -1,0 +1,17 @@
+mutabor.rest.users:
+    type: rest
+    resource: Mutabor\Application\Controller\UserController
+
+mutabor.rest.design_projects:
+    type: rest
+    parent: mutabor.rest.users
+    resource: Mutabor\Application\Controller\DesignProjectController
+
+mutabor.rest.reference:
+    type: rest
+    resource: Mutabor\Application\Controller\ReferenceController
+
+mutabor.rest.design_projects.photos:
+    type: rest
+    parent: mutabor.rest.design_projects
+    resource: Mutabor\Application\Controller\DesignProjectPhotoController

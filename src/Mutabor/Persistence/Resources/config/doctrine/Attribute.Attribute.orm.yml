@@ -1,0 +1,19 @@
+Mutabor\Domain\Model\Attribute\Attribute:
+    type: entity
+    id:
+        id:
+            column: id
+            type: AttributeId
+    table: attributes
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: type
+        type: integer
+    discriminatorMap:
+        1: Mutabor\Domain\Model\Room\Room
+        2: Mutabor\Domain\Model\DesignStyle\DesignStyle
+    fields:
+        name:
+            type: string
+        siteName:
+            type: SiteName

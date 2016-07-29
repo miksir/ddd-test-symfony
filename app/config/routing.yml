@@ -1,0 +1,11 @@
+mutabor.api:
+    resource: "@MutaborApplicationBundle/Resources/config/routing.yml"
+    prefix:   /api
+
+mutabor.doc:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix: /api/doc
+
+index:
+    path:      /
+    defaults:  { _controller: MutaborApplicationBundle:Index:index }

@@ -1,0 +1,24 @@
+Mutabor\Domain\Model\DesignProject\DesignProject:
+    type: entity
+    id:
+        id:
+            column: id
+            type: DesignProjectId
+    table: design_projects
+    repositoryClass: Mutabor\Persistence\Doctrine\DesignProject\DoctrineDesignProjectRepository
+    fields:
+        name:
+            type: string
+        description:
+            type: text
+        siteName:
+            type: SiteName
+    manyToOne:
+        owner:
+            targetEntity: Mutabor\Domain\Model\User\User
+    oneToMany:
+        interior:
+            targetEntity: Mutabor\Domain\Model\DesignProject\DesignInterior
+            cascade: ["all"]
+            orphanRemoval: true
+            mappedBy: project

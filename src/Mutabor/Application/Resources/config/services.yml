@@ -1,0 +1,111 @@
+parameters:
+    app.adapter.password_hash.class: Mutabor\Application\Adapter\PasswordEncoder
+    app.security.user_provider.class: Mutabor\Application\Security\UserProvider
+    app.security.user_authenticator.class: Mutabor\Application\Security\UserAuthenticate
+    app.security.user_token.class: Mutabor\Application\Security\UserSecurityToken
+    app.kernel.listener.exception_listener.class: Mutabor\Application\ExceptionListener
+    app.adapter.user_find_service.class: Mutabor\Application\Adapter\UserFindService
+    app.adapter.user_login_service.class: Mutabor\Application\Adapter\UserLoginService
+    app.adapter.user_register_service.class: Mutabor\Application\Adapter\UserRegisterService
+    app.adapter.designproject_create_service.class: Mutabor\Application\Adapter\DesignProject\DesignProjectCreateService
+    app.adapter.designproject_find_service.class: Mutabor\Application\Adapter\DesignProject\DesignProjectFindService
+    app.adapter.designphoto_add_service.class: Mutabor\Application\Adapter\DesignProject\DesignPhotoAddService
+    domain.user_find_service.class: Mutabor\Domain\Service\User\UserFindService
+    domain.user_login_service.class: Mutabor\Domain\Service\User\UserLoginService
+    domain.user_register_service.class: Mutabor\Domain\Service\User\UserRegisterService
+    domain.user_specification.email.class: Mutabor\Domain\Model\User\EmailIsUnique
+    domain.user_specification.phone.class: Mutabor\Domain\Model\User\PhoneIsUnique
+    domain.validation.sandbox.class: Mutabor\Domain\Validation\ValidationSandbox
+    domain.designproject_fabric.class: Mutabor\Domain\Model\DesignProject\DesignProjectFabric
+    domain.designproject_create_service.class: Mutabor\Domain\Service\DesignProject\DesignProjectCreateService
+    domain.designproject_find_service.class: Mutabor\Domain\Service\DesignProject\DesignProjectFindService
+    domain.designphoto_add_service.class: Mutabor\Domain\Service\DesignPhoto\DesignPhotoAddService
+
+services:
+    jms_serializer.form_deserialization_visitor:
+        class: Mutabor\Application\Serializer\FormDeserializationVisitor
+        arguments: [ '@jms_serializer.naming_strategy', '@jms_serializer.object_constructor' ]
+        tags:
+            - { name: jms_serializer.deserialization_visitor, format: form }
+    jms_serializer.multipart_deserialization_visitor:
+        class: Mutabor\Application\Serializer\MultipartDeserializationVisitor
+        arguments: [ '@jms_serializer.naming_strategy', '@jms_serializer.object_constructor' ]
+        tags:
+            - { name: jms_serializer.deserialization_visitor, format: multipart }
+
+    app.kernel.listener.exception_listener:
+        class: '%app.kernel.listener.exception_listener.class%'
+        tags:
+            - {name: kernel.event_listener, priority: 200, event: kernel.exception, method: onKernelResponse}
+
+    app.password_hashing.symfony_adapter:
+        class: '%app.adapter.password_hash.class%'
+        arguments: ['@security.password_encoder']
+    app.password_hashing:
+        alias: app.password_hashing.symfony_adapter
+    app.user_specification.phone:
+        class: '%domain.user_specification.phone.class%'
+        arguments: ['@domain.user_repository']
+    app.user_specification.email:
+        class: '%domain.user_specification.email.class%'
+        arguments: ['@domain.user_repository']
+    domain.validation.sanbox:
+        class: '%domain.validation.sandbox.class%'
+    domain.user_register_service:
+        class: '%domain.user_register_service.class%'
+        arguments: ['@domain.user_repository', '@app.user_specification.email', '@app.user_specification.phone', '@app.password_hashing', '@domain.validation.sanbox']
+    domain.user_find_service:
+        class: '%domain.user_find_service.class%'
+        arguments: ['@domain.user_repository', '@domain.validation.sanbox']
+    domain.user_login_service:
+        class: '%domain.user_login_service.class%'
+        arguments: ['@domain.user_repository', '@app.password_hashing', '@domain.validation.sanbox']
+    app.user_register_service:
+        class: '%app.adapter.user_register_service.class%'
+        arguments: ['@domain.user_register_service']
+    app.user_find_service:
+        class: '%app.adapter.user_find_service.class%'
+        arguments: ['@domain.user_find_service']
+    app.user_login_service:
+        class: '%app.adapter.user_login_service.class%'
+        arguments: ['@domain.user_login_service']
+
+    app.domain_user_provider:
+        class: '%app.security.user_provider.class%'
+        arguments: ['@app.user_find_service']
+
+    app.security.user_token:
+        class: '%app.security.user_token.class%'
+        arguments: ['%secret%']
+    app.user_authenticator:
+        class: '%app.security.user_authenticator.class%'
+        arguments: ['@app.security.user_token', '@fos_rest.view_handler.default']
+
+    domain.designphoto_add_service:
+        class: '%domain.designphoto_add_service.class%'
+        arguments: ['@domain.designphoto_repository', '@domain.user_repository', '@domain.validation.sanbox']
+    app.designphoto_add_service:
+        class: '%app.adapter.designphoto_add_service.class%'
+        arguments: ['@domain.designphoto_add_service']
+
+    domain.designproject_fabric:
+        class: '%domain.designproject_fabric.class%'
+    domain.designproject_create_service:
+        class: '%domain.designproject_create_service.class%'
+        arguments:
+            - '@domain.designproject_repository'
+            - '@domain.user_repository'
+            - '@domain.validation.sanbox'
+            - '@domain.room_repository'
+            - '@domain.designstyle_repository'
+            - '@domain.designphoto_repository'
+            - '@domain.designproject_fabric'
+    app.designproject_create_service:
+        class: '%app.adapter.designproject_create_service.class%'
+        arguments: ['@domain.designproject_create_service']
+    domain.designproject_find_service:
+        class: '%domain.designproject_find_service.class%'
+        arguments: ['@domain.designproject_repository', '@domain.validation.sanbox']
+    app.designproject_find_service:
+        class: '%app.adapter.designproject_find_service.class%'
+        arguments: ['@domain.designproject_find_service']

@@ -1,0 +1,61 @@
+parameters:
+    persistence.user_repository.doctrine.class: Mutabor\Persistence\Doctrine\User\DoctrineUserRepository
+    persistence.designproject_repository.doctrine.class: Mutabor\Persistence\Doctrine\DesignProject\DoctrineDesignProjectRepository
+    persistence.room_repository.doctrine.class: Mutabor\Persistence\Doctrine\Room\DoctrineRoomRepository
+    persistence.designstyle_repository.doctrine.class: Mutabor\Persistence\Doctrine\DesignStyle\DoctrineDesignStyleRepository
+    persistence.designphoto_repository.doctrine.class: Mutabor\Persistence\Doctrine\DesignPhoto\DoctrineDesignPhotoRepository
+    upload.designphoto.directory: '%kernel.root_dir%/../web/uploads/designphoto'
+    persistence.designphoto_file_storage.disk.class: Mutabor\Persistence\Doctrine\DesignPhoto\DoctrineDesignPhotoFileStorageDisk
+    persistence.designphoto_file_storage.mimeguesser.class: Symfony\Component\HttpFoundation\File\MimeType\MimeTypeExtensionGuesser
+    persistence.listener.designphoto_load.class: Mutabor\Persistence\Doctrine\DesignPhoto\DoctrineDesignPhotoEvents
+
+services:
+    persistence.user_repository.doctrine:
+        class: '%persistence.user_repository.doctrine.class%'
+        public: false
+        arguments: ['@doctrine.orm.entity_manager']
+    domain.user_repository:
+        alias: persistence.user_repository.doctrine
+
+    persistence.designproject_repository.doctrine:
+        class: '%persistence.designproject_repository.doctrine.class%'
+        public: false
+        arguments: ['@doctrine.orm.entity_manager']
+    domain.designproject_repository:
+        alias: persistence.designproject_repository.doctrine
+
+    persistence.room_repository.doctrine:
+        class: '%persistence.room_repository.doctrine.class%'
+        public: false
+        arguments: ['@doctrine.orm.entity_manager']
+    domain.room_repository:
+        alias: persistence.room_repository.doctrine
+
+    persistence.designstyle_repository.doctrine:
+        class: '%persistence.designstyle_repository.doctrine.class%'
+        public: false
+        arguments: ['@doctrine.orm.entity_manager']
+    domain.designstyle_repository:
+        alias: persistence.designstyle_repository.doctrine
+
+    persistence.designphoto_file_storage.mimeguesser:
+        class: '%persistence.designphoto_file_storage.mimeguesser.class%'
+        public: false
+    persistence.designphoto_file_storage.disk:
+        class: '%persistence.designphoto_file_storage.disk.class%'
+        arguments: ['%upload.designphoto.directory%', '@persistence.designphoto_file_storage.mimeguesser']
+        public: false
+    persistence.designphoto_file_storage:
+        alias: persistence.designphoto_file_storage.disk
+    persistence.listener.designphoto_load:
+        class: '%persistence.listener.designphoto_load.class%'
+        arguments: ['@persistence.designphoto_file_storage']
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }
+
+    persistence.designphoto_repository.doctrine:
+        class: '%persistence.designphoto_repository.doctrine.class%'
+        public: false
+        arguments: ['@doctrine.orm.entity_manager', '@persistence.designphoto_file_storage']
+    domain.designphoto_repository:
+        alias: persistence.designphoto_repository.doctrine

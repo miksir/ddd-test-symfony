@@ -1,0 +1,25 @@
+Mutabor\Domain\Model\DesignProject\DesignInterior:
+    type: entity
+    id:
+        id:
+            column: id
+            type: DesignInteriorId
+    table: design_interiors
+    fields:
+        title:
+            type: string
+        description:
+            type: text
+    manyToOne:
+        project:
+            targetEntity: Mutabor\Domain\Model\DesignProject\DesignProject
+        room:
+            targetEntity: Mutabor\Domain\Model\Room\Room
+        design_style:
+            targetEntity: Mutabor\Domain\Model\DesignStyle\DesignStyle
+    oneToMany:
+        photo:
+            targetEntity: Mutabor\Domain\Model\DesignPhoto\DesignPhoto
+            cascade: ["all"]
+            orphanRemoval: true
+            mappedBy: interior

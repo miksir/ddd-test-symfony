@@ -1,0 +1,23 @@
+Mutabor\Domain\Model\User\User:
+    type: entity
+    id:
+        id:
+            column: id
+            type: UserId
+    table: users
+    repositoryClass: Mutabor\Persistence\Doctrine\User\DoctrineUserRepository
+    fields:
+        email:
+            type: Email
+        password:
+            type: HashedPassword
+        fullname:
+            type: FullName
+        phone:
+            type: Phone
+    manyToMany:
+        role:
+            targetEntity: Mutabor\Domain\Model\Role\Role
+            joinTable:
+                name: user_roles
+            cascade: ["persist", "merge"]

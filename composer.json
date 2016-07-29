@@ -1,0 +1,67 @@
+{
+    "name": "artutkin/mutabor3",
+    "license": "proprietary",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        },
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php"
+        ]
+    },
+    "require": {
+        "php": ">=7.0",
+        "symfony/symfony": "~2.8-stable",
+        "doctrine/orm": "~2.5-stable",
+        "doctrine/doctrine-bundle": "~1.4-stable",
+        "symfony/swiftmailer-bundle": "~2.3-stable",
+        "symfony/monolog-bundle": "~2.4-stable",
+        "sensio/distribution-bundle": "~5.0-stable",
+        "sensio/framework-extra-bundle": "~3.0.2-stable",
+        "incenteev/composer-parameter-handler": "~2.0-stable",
+        "zendframework/zend-soap": "~2.5",
+        "friendsofsymfony/rest-bundle": "~1.0-stable",
+        "jms/security-extra-bundle": "~1.5.0-stable",
+        "jms/di-extra-bundle": "~1.5-stable",
+        "jms/serializer-bundle": "~1.0-stable",
+        "nelmio/api-doc-bundle": "~2.12-stable",
+        "ramsey/uuid": "~3.4-stable",
+        "nelmio/cors-bundle": "~1.4-stable",
+        "doctrine/doctrine-migrations-bundle": "^1.1"
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.2",
+        "flow/jsonpath": "^0.3.1"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        ]
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "extra": {
+        "symfony-app-dir": "app",
+        "symfony-web-dir": "web",
+        "symfony-assets-install": "relative",
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        }
+    }
+}

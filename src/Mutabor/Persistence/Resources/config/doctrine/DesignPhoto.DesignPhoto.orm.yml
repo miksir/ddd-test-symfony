@@ -1,0 +1,18 @@
+Mutabor\Domain\Model\DesignPhoto\DesignPhoto:
+    type: entity
+    id:
+        id:
+            column: id
+            type: DesignPhotoId
+    table: design_photos
+    repositoryClass: Mutabor\Persistence\Doctrine\DesignPhoto\DoctrineDesignPhotoRepository
+    fields:
+        file:
+            type: Image
+    manyToOne:
+        interior:
+            targetEntity: Mutabor\Domain\Model\DesignProject\DesignInterior
+            inversedBy: photo
+        owner:
+            targetEntity: Mutabor\Domain\Model\User\User
+

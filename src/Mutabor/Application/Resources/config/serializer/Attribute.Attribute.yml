@@ -1,0 +1,20 @@
+Mutabor\Domain\Model\Attribute\Attribute:
+    exclusion_policy: all
+    read_only: true
+    properties:
+        id:
+            expose: true
+            accessor:
+                getter: getId
+            type: string
+        name:
+            expose: true
+            accessor:
+                getter: getName
+            type: string
+        siteName:
+            expose: true
+            accessor:
+                getter: getSiteName
+            type: string
+
